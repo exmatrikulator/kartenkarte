@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  overpass:
+    build: docker-overpass-api
+    volumes:
+      - db:/db
+    #command: init
+    command: dispatcher
+    #restart: on-error
+    ports:
+      - 80:80
+  nginx:
+    #image: nginx
+    build: www
+    volumes:
+      - ./www:/usr/share/nginx/html
+    ports:
+     - 8081:80
+
+volumes:
+  db:

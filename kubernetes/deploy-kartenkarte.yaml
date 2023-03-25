@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kartenkarte
+spec:
+  selector:
+    matchLabels:
+      app: kartenkarte
+  template:
+    metadata:
+      labels:
+        app: kartenkarte
+    spec:
+      containers:
+      - name: kartenkarte
+        image: exmatrikulator/kartenkarte
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80

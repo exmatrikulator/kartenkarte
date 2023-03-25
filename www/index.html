@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Kartenkarte</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.css"
+        integrity="sha512-mQ77VzAakzdpWdgfL/lM1ksNy89uFgibRQANsNneSTMD/bj0Y/8+94XMwYhnbzx8eki2hrbPpDm0vD0CiT2lcg=="
+        crossorigin="" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css"
+        integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
+        crossorigin="" />
+
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js"
+        integrity="sha512-+Zr0llcuE/Ho6wXRYtlWypMyWSEMxrWJxrYgeAMDRSf1FF46gQ3PAVOVp5RHdxdzikZXuHZ0soHpqRkkPkI3KA=="
+        crossorigin=""></script>
+
+    <script src="/js/OverPassLayer.bundle.js"></script>
+    <script src="/js//kartenkarte.js"></script>
+    <script src="/js//leaflet-sidepanel.min.js"></script>
+    <script src="/js//leaflet-hash.js"></script>
+    <script src="/js//kartenkarten.js"></script>
+
+    <link rel="stylesheet" href="/css/OverPassLayer.css" />
+    <link rel="stylesheet" href="/css/leaflet-sidepanel.css" />
+
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map">
+        <div id="panelID" class="sidepanel" aria-label="side panel" aria-hidden="false">
+            <div class="sidepanel-inner-wrapper">
+                <nav class="sidepanel-tabs-wrapper" aria-label="sidepanel tab navigation">
+                    <ul class="sidepanel-tabs">
+                        <li class="sidepanel-tab">
+                            <a href="#" class="sidebar-tab-link" role="tab" data-tab-link="tab-1">
+                                About
+                            </a>
+                        </li>
+                        <li class="sidepanel-tab">
+                            <a href="#" class="sidebar-tab-link" role="tab" data-tab-link="tab-2">
+                                Karten
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="sidepanel-content-wrapper">
+                    <div class="sidepanel-content">
+                        <div class="sidepanel-tab-content" data-tab-content="tab-1">
+                            <p>About</p>
+                        </div>
+                        <div class="sidepanel-tab-content" data-tab-content="tab-2" id="karten-list">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidepanel-toggle-container">
+                <button class="sidepanel-toggle-button" type="button" aria-label="toggle side panel"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function load_kartenkarte() {
+            if (typeof (kartenkarten) === typeof undefined)
+                return;
+            // sort
+            kartenkarten = new Map([...kartenkarten.entries()].sort());
+            kartenkarten.forEach(function (value, key) {
+                var p = document.createElement('p');
+                var a = document.createElement('a');
+                a.setAttribute("href", "//" + key + ".127.0.0.1.nip.io:8081");
+                //a.setAttribute("href", "//" + key + ".kartenkarte.org");
+                a.setAttribute("title", value.description);
+                a.addEventListener('click', function (e) {
+                    // keep the current hash
+                    a.setAttribute('href', a.getAttribute('href') + window.location.hash);
+                });
+                a.innerHTML = value.title;
+                p.appendChild(a);
+                document.getElementById("karten-list").appendChild(p);
+            })
+            kartenkarte = kartenkarten.get(window.location.hostname.split('.')[0]);
+
+            if (typeof (kartenkarte) === typeof undefined)
+                return;
+
+            map.setView(
+                new L.LatLng(
+                    typeof kartenkarte.lat !== typeof undefined ? kartenkarte.lat : 51.138,
+                    typeof kartenkarte.lon !== typeof undefined ? kartenkarte.lon : 10.272),
+                typeof kartenkarte.zoom !== typeof undefined ? kartenkarte.zoom : 7);
+            document.title = kartenkarte.title + " - Kartenkarte";
+            typeof kartenkarte.style !== typeof undefined ? document.styleSheets.appendChild(kartenkarte.style) : null ;
+            var opl = new L.OverPassLayer({
+                debug: false,
+                endPoint: '/api/',
+                endPoint: 'http://127.0.0.1.nip.io:80/api/',
+                query: kartenkarte.query,
+                //query: 'node({{bbox}})["amenity"="post_box"];out;',
+                minZoom: typeof kartenkarte.minZoom !== typeof undefined ? kartenkarte.minZoom : 15,
+                minZoomIndicatorOptions: {
+                    position: 'topright',
+                    minZoomMessage: 'Herein zoomen, um Daten zu sehen.<br>\nAktueller Zoom: CURRENTZOOM - Daten ab Zoom: MINZOOMLEVEL'
+                },
+                onSuccess: function (data) {
+                    var markerClusterGroup = L.markerClusterGroup();
+
+                    // nwr = node way realtion
+                    data.elements.forEach(function (nwr) {
+                        var popup = "";
+                        if (typeof generate_popup === "function") {
+                            popup = generate_popup(nwr);
+                        }
+                        if (nwr.type == "node") {
+                            lat = nwr.lat;
+                            lon = nwr.lon;
+                        } else {
+                            lat = nwr.center.lat;
+                            lon = nwr.center.lon;
+                        }
+                        markerClusterGroup.addLayer(L.marker([lat, lon]).bindPopup(popup));
+                    });
+
+                    map.addLayer(markerClusterGroup);
+                },
+            });
+            map.addLayer(opl);
+
+            // Make nice URL to restore you session
+            var hash = new L.Hash(map);
+        }
+
+        var attr_osm = 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+            attr_overpass = 'POI via <a href="https://www.overpass-api.de">Overpass API</a>';
+        var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: [attr_osm, attr_overpass].join(', '),
+            maxZoom: 19
+        });
+
+        var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(51.2586, 7.1644), 14);
+
+
+
+        load_kartenkarte();
+
+        const panelRight = L.control.sidepanel('panelID', {
+            panelPosition: 'left',
+            hasTabs: true,
+            startTab: 'tab-2'
+        }).addTo(map);
+
+
+
+    </script>
+</body>
+
+</html>

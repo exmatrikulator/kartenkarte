@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: overpass-api
+spec:
+  serviceName: overpass-api
+  selector:
+    matchLabels:
+      app: overpass-api
+  template:
+    metadata:
+      labels:
+        app: overpass-api
+    spec:
+      initContainers:
+      - name: init
+        image: exmatrikulator/overpass-api
+        args:
+          - "init"
+        volumeMounts:
+        - mountPath: /db/
+          name: overpass-db
+        resources:
+          limits:
+            memory: "2G"
+            cpu: "1"
+        imagePullPolicy: Always
+
+      containers:
+      - name: ubuntu
+        image: ubuntu
+        command:
+          - "bash"
+          - "-c"
+          - "sleep 7d"
+        volumeMounts:
+        - mountPath: /db/
+          name: overpass-db
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      - name: dispatcher
+        image: exmatrikulator/overpass-api
+        args:
+          - "dispatcher"
+        volumeMounts:
+        - mountPath: /db/
+          name: overpass-db
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      # - name: fetch
+      #   image: exmatrikulator/overpass-api
+      #   args:
+      #     - "fetch"
+      #   volumeMounts:
+      #   - mountPath: /db/
+      #     name: overpass-db
+      #   resources:
+      #     limits:
+      #       memory: "128Mi"
+      #       cpu: "500m"
+      # - name: apply-osc-to-db
+      #   image: exmatrikulator/overpass-api
+      #   args:
+      #     - "apply_osc_to_db"
+      #   volumeMounts:
+      #   - mountPath: /db/
+      #     name: overpass-db
+      #   resources:
+      #     limits:
+      #       memory: "128Mi"
+      #       cpu: "500m"
+      # volumes:
+      # - name: overpass-db
+      #   persistentVolumeClaim:
+      #     claimName: overpass-db
+  volumeClaimTemplates:
+  - metadata:
+      name: overpass-db
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 200Gi
