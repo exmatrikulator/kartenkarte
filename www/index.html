@@ -95,8 +95,7 @@
             kartenkarten.forEach(function (value, key) {
                 var p = document.createElement('p');
                 var a = document.createElement('a');
-                a.setAttribute("href", "//" + key + ".127.0.0.1.nip.io:8081");
-                //a.setAttribute("href", "//" + key + ".kartenkarte.org");
+                a.setAttribute("href", "//" + key + "." + window.location.hostname.replace(/^[^.]+\./g, "") );
                 a.setAttribute("title", value.description);
                 a.addEventListener('click', function (e) {
                     // keep the current hash
@@ -117,11 +116,14 @@
                     typeof kartenkarte.lon !== typeof undefined ? kartenkarte.lon : 10.272),
                 typeof kartenkarte.zoom !== typeof undefined ? kartenkarte.zoom : 7);
             document.title = kartenkarte.title + " - Kartenkarte";
-            typeof kartenkarte.style !== typeof undefined ? document.styleSheets.appendChild(kartenkarte.style) : null ;
+            if(typeof kartenkarte.style !== typeof undefined) {
+                const style = document.createElement('style');
+                style.innerHTML = kartenkarte.style;
+                document.head.appendChild(style);
+            }
             var opl = new L.OverPassLayer({
                 debug: false,
                 endPoint: '/api/',
-                endPoint: 'http://127.0.0.1.nip.io:80/api/',
                 query: kartenkarte.query,
                 //query: 'node({{bbox}})["amenity"="post_box"];out;',
                 minZoom: typeof kartenkarte.minZoom !== typeof undefined ? kartenkarte.minZoom : 15,
