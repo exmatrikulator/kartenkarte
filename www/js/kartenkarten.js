@@ -1,7 +1,7 @@
 kartenkarten = new Map([
-    ["localhost", {
-        title: "Test Map",
-        description: "A map just for testing",
+    ["briefkasten", {
+        title: "Briefkästen",
+        description: "Wo steht der nächste Briefkasten?",
         query: "node({{bbox}})['amenity'='post_box'];out;",
         lat: "51.2627",
         lon: "7.1772",
@@ -105,6 +105,6 @@ kartenkarten = new Map([
         title: "Automaten auf Hofläden",
         description: "",
         query: "(node({{bbox}})[vending~food];node({{bbox}})[vending~eggs];node({{bbox}})[vending~milk];);out center;",
-        minZoom: 14
+        minZoom: 12
     }],
 ]);
