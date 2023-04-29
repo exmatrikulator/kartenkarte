@@ -76,7 +76,7 @@ kartenkarten = new Map([
         query: "(nwr({{bbox}})[shop=hairdresser];);out center;",
         marker: { hairdresser: {icon: 'scissors', color: 'darkred'}},
         mapping:{ shop:{hairdresser:"hairdresser"}},
-        minZoom: 13
+        minZoom: 14
     }],
     ["wasserspender", {
         title: "Wasserspender",
@@ -159,5 +159,13 @@ kartenkarten = new Map([
                  hospital: {icon: 'hospital', color: 'darkred', iconColor: 'white'}},
         mapping:{ amenity:{pharmacy:"pharmacy",doctors:"doctors",hospital:"hospital"}},
         minZoom: 15
+    }],
+    ["voegeln", {
+        title: "Nistkästen für Vögel",
+        description: "Nistkästen & Vogelhäuser",
+        query: "(nwr({{bbox}})[amenity=nest_box];nwr({{bbox}})[man_made=birdhouse];);out center;",
+        marker: { nest: {icon: 'crow', color: 'purple'}, birdhouse: {icon: 'dove', color: 'pink'}},
+        mapping:{ amenity:{nest_box:"nest"}, man_made:{birdhouse:"birdhouse"}},
+        minZoom: 9
     }]
 ]);
