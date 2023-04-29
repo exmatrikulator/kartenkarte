@@ -18,7 +18,9 @@
         integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
         crossorigin="" />
 
-
+    <link href="/css/fontawesome-solid.css" rel="stylesheet">
+    <link href="/css/fontawesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
@@ -32,6 +34,7 @@
     <script src="/js//kartenkarte.js"></script>
     <script src="/js//leaflet-sidepanel.min.js"></script>
     <script src="/js//leaflet-hash.js"></script>
+    <script src="/js/leaflet.awesome-markers.js"></script>
     <script src="/js//kartenkarten.js"></script>
 
     <link rel="stylesheet" href="/css/OverPassLayer.css" />
@@ -87,7 +90,11 @@
     </div>
     <script>
 
+
+        var availableMarker = [];
         function load_kartenkarte() {
+
+    
             if (typeof (kartenkarten) === typeof undefined)
                 return;
             // sort
@@ -111,18 +118,30 @@
                 return;
 
             if(map._lastCenter.lat == 0 && map._lastCenter.lng == 0) {
-            map.setView(
-                new L.LatLng(
-                    typeof kartenkarte.lat !== typeof undefined ? kartenkarte.lat : 51.138,
-                    typeof kartenkarte.lon !== typeof undefined ? kartenkarte.lon : 10.272),
-                typeof kartenkarte.zoom !== typeof undefined ? kartenkarte.zoom : 7);
+                map.setView(
+                    new L.LatLng(
+                        typeof kartenkarte.lat !== typeof undefined ? kartenkarte.lat : 51.138,
+                        typeof kartenkarte.lon !== typeof undefined ? kartenkarte.lon : 10.272),
+                    typeof kartenkarte.zoom !== typeof undefined ? kartenkarte.zoom : 7);
             }
             document.title = kartenkarte.title + " - Kartenkarte";
-            if(typeof kartenkarte.style !== typeof undefined) {
-                const style = document.createElement('style');
-                style.innerHTML = kartenkarte.style;
-                document.head.appendChild(style);
+
+            // Init defined Markers
+            availableMarker["default"] = L.AwesomeMarkers.icon({
+                            icon: "map-marker-alt",
+                            markerColor: "blue",
+                            prefix: "fa"
+                        });
+            if(typeof kartenkarte.marker !== typeof undefined) {
+                Object.keys(kartenkarte.marker).forEach(tag=>{
+                    availableMarker[tag] = L.AwesomeMarkers.icon({
+                            icon: kartenkarte.marker[tag].icon,
+                            markerColor: kartenkarte.marker[tag].color,
+                            prefix: "fa"
+                        });
+                });
             }
+
             var opl = new L.OverPassLayer({
                 debug: false,
                 endPoint: '/api/',
@@ -149,7 +168,28 @@
                             lat = nwr.center.lat;
                             lon = nwr.center.lon;
                         }
-                        markerClusterGroup.addLayer(L.marker([lat, lon]).bindPopup(popup));
+
+                        // search for mapped markers
+                        var marker = availableMarker["default"];
+                        if (typeof nwr.tags !== "undefined"){
+                            Object.keys(nwr.tags).forEach(tagKey=>{
+                                if(typeof kartenkarte.mapping !== typeof undefined) {
+                                    Object.keys(kartenkarte.mapping).forEach(mappingKey=>{
+                                        if (typeof kartenkarte.mapping[mappingKey][nwr.tags[tagKey]] !== "undefined") {
+                                            // found defined Marker
+                                            // console.log(kartenkarte.mapping[mappingKey][nwr.tags[tagKey]], kartenkarte.mapping[mappingKey]);
+                                            marker = availableMarker[kartenkarte.mapping[mappingKey][nwr.tags[tagKey]]]
+                                        }
+                                    });
+                                }
+                                // console.log(key ,nwr.tags[key]);
+                            });
+                        }
+                        if(Object.keys(availableMarker).length > 1) {
+                            L.marker([lat, lon],{icon: marker}).bindPopup(popup).addTo(map);
+                        } else {
+                            markerClusterGroup.addLayer(L.marker([lat, lon],{icon: marker}).bindPopup(popup));
+                        }
                     });
 
                     map.addLayer(markerClusterGroup);

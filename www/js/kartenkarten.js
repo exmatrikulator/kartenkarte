@@ -17,25 +17,20 @@ kartenkarten = new Map([
             nwr({{bbox}})[amenity=cafe]; \
             nwr({{bbox}})[shop=supermarket]; \
             nwr({{bbox}})[shop=butcher];);out center;",
-        style: "node[amenity=restaurant], \
-            node[amenity=fast_food], \
-            node[amenity=cafe], \
-            area[amenity=restaurant], \
-            area[amenity=fast_food], \
-            area[amenity=cafe] \
-            { color:blue; fill-color:gray; } \
-            \
-            node[shop=bakery], \
-            area[shop=bakery] \
-            { color:grey; fill-color:yellow;} \
-            \
-            node[shop=supermarket], \
-            area[shop=supermarket] \
-            { color:gray; fill-color:green; } \
-            \
-            node[shop=butcher], \
-            area[shop=butcher] \
-            { color:gray; fill-color:orange; }",
+        marker: {   cafe: {icon: 'coffee', color: 'darkblue'},
+                    bakery: {icon: 'bread-slice', color: 'beige'},
+                    fast_food: {icon: 'hamburger', color: 'orange'},
+                    supermarket:{icon: 'shopping-cart', color: 'green'},
+                    restaurant:{icon: 'utensils', color: 'purple'},
+                    butcher:{icon: 'cow', color: 'red'}},
+        mapping:    {amenity:{restaurant:"restaurant",
+                                cafe:"cafe",
+                            fast_food: "fast_food"},
+                    shop:{
+                        supermarket: "supermarket",
+                        bakery: "bakery",
+                        butcher: "butcher"
+                    }},
         lat: "51.4555",
         lon: "7.0121",
         zoom: 15,
