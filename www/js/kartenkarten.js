@@ -167,5 +167,13 @@ kartenkarten = new Map([
         marker: { nest: {icon: 'crow', color: 'purple'}, birdhouse: {icon: 'dove', color: 'pink'}},
         mapping:{ amenity:{nest_box:"nest"}, man_made:{birdhouse:"birdhouse"}},
         minZoom: 9
-    }]
+    }],
+    ["gaslaternen", {
+        title: "Gaslaternen",
+        description: "",
+        query: "(nwr({{bbox}})[lit_by_gaslight=yes];);out center;",
+        marker: { lit: {icon: 'lightbulb', color: 'orange'}},
+        mapping:{ lit_by_gaslight:{yes:"lit"}},
+        minZoom: 16
+    }],
 ]);
