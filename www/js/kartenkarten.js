@@ -58,7 +58,7 @@ kartenkarten = new Map([
         title: "Wo kommt der Internetanschluss her?",
         description: "",
         query: "(nwr({{bbox}})[telecom=exchange];);out center;",
-        marker: { exchange: {icon: 'network-wired', color: 'black'}},
+        marker: { exchange: {icon: 'network-wired', color: 'black', iconColor: 'white'}},
         mapping:{ telecom:{exchange:"exchange"}},
         minZoom: 13
     }],
@@ -90,7 +90,7 @@ kartenkarten = new Map([
         title: "Stolpersteine",
         description: "",
         query: "(node({{bbox}})[memorial=stolperstein];node({{bbox}})['memorial:type'=stolperstein];);out center;",
-        marker: { stolperstein: {icon: 'stop', color: 'black'}},
+        marker: { stolperstein: {icon: 'stop', color: 'black', iconColor:'white'}},
         mapping:{ memorial:{stolperstein:"stolperstein"}, "memorial:type":{stolperstein:"stolperstein"} },
         minZoom: 13
     }],
@@ -132,6 +132,32 @@ kartenkarten = new Map([
         query: "(nwr({{bbox}})[highway=bus_stop];nwr({{bbox}})[amenity=bus_station];);out center;",
         marker: { bus: {icon: 'bus', color: 'blue'}},
         mapping:{ highway:{bus_stop:"bus"}, amenity:{bus_station:"bus"}},
+        minZoom: 15
+    }],
+    ["camera", {
+        title: "Werde ich überwacht?",
+        description: "",
+        query: "(nwr({{bbox}})[man_made=surveillance];);out center;",
+        marker: { camera: {icon: 'video', color: 'purple'}},
+        mapping:{ man_made:{surveillance:"camera"}},
+        minZoom: 15
+    }],
+    ["tankstelle", {
+        title: "Tankstellen",
+        description: "",
+        query: "(nwr({{bbox}})[amenity=fuel];);out center;",
+        marker: { station: {icon: 'gas-pump', color: 'purple'}},
+        mapping:{ amenity:{fuel:"station"}},
+        minZoom: 15
+    }],
+    ["med", {
+        title: "Medizinische Versorgung",
+        description: "",
+        query: "(nwr({{bbox}})[amenity=pharmacy];nwr({{bbox}})[amenity=doctors];nwr({{bbox}})[amenity=hospital];);out center;",
+        marker: { pharmacy: {icon: 'suitcase-medical', color: 'green'},
+                 doctors: {icon: 'user-doctor', color: 'grey'},
+                 hospital: {icon: 'hospital', color: 'darkred', iconColor: 'white'}},
+        mapping:{ amenity:{pharmacy:"pharmacy",doctors:"doctors",hospital:"hospital"}},
         minZoom: 15
     }]
 ]);
