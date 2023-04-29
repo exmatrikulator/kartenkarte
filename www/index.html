@@ -96,6 +96,8 @@
     
             if (typeof (kartenkarten) === typeof undefined)
                 return;
+            if(window.location.hostname == "kartenkarte.org")
+                window.location = "http://fahrrad-parken.kartenkarte.org";
             // sort
             kartenkarten = new Map([...kartenkarten.entries()].sort());
             kartenkarten.forEach(function (value, key) {
