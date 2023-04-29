@@ -18,7 +18,6 @@
         integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
         crossorigin="" />
 
-    <link href="/css/fontawesome-solid.css" rel="stylesheet">
     <link href="/css/fontawesome.css" rel="stylesheet">
     <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
 
@@ -137,6 +136,7 @@
                     availableMarker[tag] = L.AwesomeMarkers.icon({
                             icon: kartenkarte.marker[tag].icon,
                             markerColor: kartenkarte.marker[tag].color,
+                            iconColor: kartenkarte.marker[tag].iconColor,
                             prefix: "fa"
                         });
                 });

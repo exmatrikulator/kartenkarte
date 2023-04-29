@@ -3,6 +3,8 @@ kartenkarten = new Map([
         title: "Briefkästen",
         description: "Wo steht der nächste Briefkasten?",
         query: "node({{bbox}})['amenity'='post_box'];out;",
+        marker: { postbox: {icon: 'envelope', color: 'orange'}},
+        mapping:{ amenity:{post_box:"postbox"}},
         lat: "51.2627",
         lon: "7.1772",
         zoom: 15
@@ -40,66 +42,96 @@ kartenkarten = new Map([
         title: "Hackerspaces",
         description: "Wo gibt es Hackerspaces?",
         query: "nwr({{bbox}})[leisure=hackerspace];out center;",
+        marker: { hackerspace: {icon: 'hat-cowboy', color: 'purple'}},
+        mapping:{ leisure:{hackerspace:"hackerspace"}},
         minZoom: 8
     }],
     ["defibrillator", {
         title: "Defibrillator",
         description: "Wo gibt Defibrillatoren?",
         query: "(nwr({{bbox}})[emergency=defibrillator];);out center;",
+        marker: { defibrillator: {icon: 'heart-pulse', color: 'green'}},
+        mapping:{ emergency:{defibrillator:"defibrillator"}},
         minZoom: 11
     }],
     ["internet", {
         title: "Wo kommt der Internetanschluss her?",
         description: "",
         query: "(nwr({{bbox}})[telecom=exchange];);out center;",
+        marker: { exchange: {icon: 'network-wired', color: 'black'}},
+        mapping:{ telecom:{exchange:"exchange"}},
         minZoom: 13
     }],
     ["ladestationen", {
         title: "Ladestationen",
         description: "",
         query: "(nwr({{bbox}})[amenity=charging_station];);out center;",
+        marker: { chargingstation: {icon: 'plug-circle-bolt', color: 'green'}},
+        mapping:{ amenity:{charging_station:"chargingstation"}},
         minZoom: 13
     }],
     ["friseur", {
         title: "Friseurläden",
         description: "",
         query: "(nwr({{bbox}})[shop=hairdresser];);out center;",
+        marker: { hairdresser: {icon: 'scissors', color: 'darkred'}},
+        mapping:{ shop:{hairdresser:"hairdresser"}},
         minZoom: 13
     }],
     ["wasserspender", {
         title: "Wasserspender",
         description: "",
         query: "(nwr({{bbox}})[amenity=drinking_water];);out center;",
+        marker: { water: {icon: 'glass-water', color: 'lightblue'}},
+        mapping:{ amenity:{drinking_water:"water"}},
         minZoom: 13
     }],
     ["stolpersteine", {
         title: "Stolpersteine",
         description: "",
-        query: "(node({{bbox}})[memorial=stolperstein];node({{bbox}})['memorial:type'=stolperstein];node({{bbox}})[memorial=stolperstein];);out center;",
+        query: "(node({{bbox}})[memorial=stolperstein];node({{bbox}})['memorial:type'=stolperstein];);out center;",
+        marker: { stolperstein: {icon: 'stop', color: 'black'}},
+        mapping:{ memorial:{stolperstein:"stolperstein"}, "memorial:type":{stolperstein:"stolperstein"} },
         minZoom: 13
     }],
     ["fahrrad-parken", {
         title: "Fahrrad Parkplatz",
         description: "Wo sind Fahrrad Abstellmöglichkeiten?",
         query: "(node({{bbox}})[amenity=bicycle_parking];);out center;",
-        minZoom: 13
+        marker: { parking: {icon: 'square-parking', color: 'blue'}},
+        mapping:{ amenity:{bicycle_parking:"parking"}},
+        minZoom: 15
     }],
-    ["car-wash", {
+    ["carwash", {
         title: "Autowaschanlage",
         description: "",
         query: "(nwr({{bbox}})[amenity=car_wash];);out center;",
+        marker: { carwash: {icon: 'car', color: 'blue'}},
+        mapping:{ amenity:{car_wash:"carwash"}},
         minZoom: 13
     }],
     ["container", {
         title: "Recyclingcontainer",
         description: "",
         query: "(nwr({{bbox}})[recycling_type=container];);out center;",
+        marker: { container: {icon: 'recycle', color: 'cadetblue'}},
+        mapping:{ recycling_type:{container:"container"}},
         minZoom: 14
     }],
     ["hoflaeden", {
         title: "Automaten auf Hofläden",
         description: "",
         query: "(node({{bbox}})[vending~food];node({{bbox}})[vending~eggs];node({{bbox}})[vending~milk];);out center;",
+        marker: {egg : {icon: 'egg', color: 'beige'}, food : {icon: 'utensils', color: 'orange'}, milk : {icon: 'cow', color: 'white', iconColor:'black'}},
+        mapping:{ vending:{eggs:"egg", food:"food", milk: "milk"}},
         minZoom: 12
     }],
+    ["bus", {
+        title: "Wo fährt der nächste Bus?",
+        description: "",
+        query: "(nwr({{bbox}})[highway=bus_stop];nwr({{bbox}})[amenity=bus_station];);out center;",
+        marker: { bus: {icon: 'bus', color: 'blue'}},
+        mapping:{ highway:{bus_stop:"bus"}, amenity:{bus_station:"bus"}},
+        minZoom: 15
+    }]
 ]);
