@@ -100,7 +100,10 @@ kartenkarten = new Map([
         query: "(node({{bbox}})[amenity=bicycle_parking];);out center;",
         marker: { parking: {icon: 'square-parking', color: 'blue'}},
         mapping:{ amenity:{bicycle_parking:"parking"}},
-        minZoom: 15
+        minZoom: 15,
+        lat: "51.2651",
+        lon: "7.1660",
+        zoom: 15
     }],
     ["carwash", {
         title: "Autowaschanlage",
