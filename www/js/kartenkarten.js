@@ -179,4 +179,12 @@ kartenkarten = new Map([
         mapping:{ lit_by_gaslight:{yes:"lit"}},
         minZoom: 16
     }],
+    ["brewery", {
+        title: "Brauereien",
+        description: "",
+        query: "(nwr({{bbox}})[building=brewery];nwr({{bbox}})[craft=brewery];);out center;",
+        marker: { brewery: {icon: 'beer-mug-empty', color: 'orange'}},
+        mapping:{ building:{brewery:"brewery"},craft:{brewery:"brewery"}},
+        minZoom: 8
+    }],
 ]);
