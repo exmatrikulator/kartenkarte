@@ -124,7 +124,7 @@ kartenkarten = new Map([
     ["hoflaeden", {
         title: "Automaten auf Hofläden",
         description: "",
-        query: "(node({{bbox}})[vending~food];node({{bbox}})[vending~eggs];node({{bbox}})[vending~milk];);out center;",
+        query: "(node({{bbox}})[vending~food];node({{bbox}})[vending~eggs];node({{bbox}})[vending~milk];node({{bbox}})[vending~bread];node({{bbox}})[vending~jam];);out center;",
         marker: {egg : {icon: 'egg', color: 'beige'}, food : {icon: 'utensils', color: 'orange'}, milk : {icon: 'cow', color: 'white', iconColor:'black'}},
         mapping:{ vending:{eggs:"egg", food:"food", milk: "milk"}},
         minZoom: 12
