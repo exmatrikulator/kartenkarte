@@ -190,7 +190,7 @@ kartenkarten = new Map([
     ["windrad", {
         title: "Windräder",
         description: "Wo stehen Windräder?",
-        query: "(nwr({{bbox}})[generator:source=wind];out center;",
+        query: "(nwr({{bbox}})['generator:source'=wind];);out center;",
         minZoom: 10
     }],
 ]);
