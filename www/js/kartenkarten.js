@@ -185,6 +185,12 @@ kartenkarten = new Map([
         query: "(nwr({{bbox}})[building=brewery];nwr({{bbox}})[craft=brewery];);out center;",
         marker: { brewery: {icon: 'beer-mug-empty', color: 'orange'}},
         mapping:{ building:{brewery:"brewery"},craft:{brewery:"brewery"}},
-        minZoom: 8
+        minZoom: 10
+    }],
+    ["windrad", {
+        title: "Windräder",
+        description: "Wo stehen Windräder?",
+        query: "(nwr({{bbox}})[generator:source=wind];out center;",
+        minZoom: 10
     }],
 ]);
