@@ -193,4 +193,12 @@ kartenkarten = new Map([
         query: "(nwr({{bbox}})['generator:source'=wind];);out center;",
         minZoom: 10
     }],
+    ["kneipen", {
+        title: "Kneipen",
+        description: "",
+        query: "(nwr({{bbox}})[amenity=pub];);out center;",
+        marker: { pub: {icon: 'beer-mug-empty', color: 'orange'}},
+        mapping:{ amenity:{pub:"pub"}},
+        minZoom: 15
+    }],
 ]);
