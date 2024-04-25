@@ -29,6 +29,7 @@ function generate_popup(node) {
 
   if (typeof node['lat'] !== "undefined" && typeof node['lon'] !== "undefined") popup += "<small>" + node['lat'] + " N " + node['lon'] + " O</small><br/>";
   if (typeof node.tags['uic_ref'] !== "undefined") popup += "<small>UIC: " + node.tags['uic_ref'] + "</small><br/><a href=\"http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?evaId=" + node.tags['uic_ref'] + "&boardType=dep&time=actual&productsDefault=1111101&start=yes\" target=\"_blank\">Abfahrtsplan</a><br/>";
+  popup += "<a href=\"http://maps.google.com/maps?q=&layer=c&cbll=" + node['lat'] + "," + node['lon']+ "\" target=\"_blank\">Street View</a><br/>";
   popup += "<a href=\"http://www.openstreetmap.org/edit?" + node.type + "=" + node.id + "\" target=\"_blank\">Bearbeiten</a>";
 
   return popup;
