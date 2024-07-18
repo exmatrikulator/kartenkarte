@@ -1,4 +1,14 @@
 kartenkarten = new Map([
+    ["bahnuebergang", {
+        title: "Bahnübergang",
+        description: "Wo gibt es Bahnübergänge?",
+        query: "node({{bbox}})['railway'='crossing'];out;",
+        marker: { bahnuebergang: {icon: 'stop', color: 'black', iconColor:'white'}},
+        mapping:{ railway:{crossing:"bahnuebergang"} },
+        lat: "51.2627",
+        lon: "7.1772",
+        zoom: 14
+    }],
     ["briefkasten", {
         title: "Briefkästen",
         description: "Wo steht der nächste Briefkasten?",
