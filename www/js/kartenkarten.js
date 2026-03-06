@@ -193,6 +193,12 @@ kartenkarten = new Map([
         query: "(nwr({{bbox}})['generator:source'=wind];);out center;",
         minZoom: 10
     }],
+    ["wickeltisch", {
+        title: "Wickeltische",
+        description: "Wo gibt es Wickeltische?",
+        query: "(nwr({{bbox}})[changing_table=yes];);out center;",
+        minZoom: 14
+    }],
     ["kneipen", {
         title: "Kneipen",
         description: "",
